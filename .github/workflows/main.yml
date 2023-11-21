@@ -1,0 +1,46 @@
+name: Install SSDT and Build .NET Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSDT
+      run: |
+        # Download SSDT installer from a URL (replace with the actual download URL)
+        $ssdtInstallerUrl = "https://download.microsoft.com/download/xyz/SSDTInstaller.exe"
+        $ssdtInstallerPath = "$env:TEMP\SSDTInstaller.exe"
+        Invoke-WebRequest -Uri $ssdtInstallerUrl -OutFile $ssdtInstallerPath
+
+        # Install SSDT silently using the installer
+        Start-Process -FilePath $ssdtInstallerPath -ArgumentList '/install /quiet' -Wait
+
+        # Clean up the downloaded installer
+        Remove-Item -Path $ssdtInstallerPath
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Use the version where the project was built
+
+    - name: Restore NuGet packages
+      run: dotnet restore path/to/your/solution.sln
+
+    - name: Build the project
+      run: dotnet build path/to/your/solution.sln --configuration Release
+
+    - name: Test the project
+      run: dotnet test path/to/your/test/project.csproj
+
+    # Add more steps as needed for your specific deployment or further actions.
