@@ -19,7 +19,7 @@ jobs:
     - name: Install SSDT
       run: |
         # Download SSDT installer from a URL (replace with the actual download URL)
-        $ssdtInstallerUrl = "https://download.microsoft.com/download/xyz/SSDTInstaller.exe"
+        $ssdtInstallerUrl = "https://go.microsoft.com/fwlink/?linkid=2192400"
         $ssdtInstallerPath = "$env:TEMP\SSDTInstaller.exe"
         Invoke-WebRequest -Uri $ssdtInstallerUrl -OutFile $ssdtInstallerPath
 
